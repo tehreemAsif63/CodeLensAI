@@ -89,13 +89,11 @@ Rule: Always keep something working.
 
 ---
 
-## ⚠️ Key Rule
+## ⚠️ Core Principle
 
-Never build frontend or backend in isolation.
+Always keep a working version of the app.
 
-Always iterate:
-
-> small backend change → frontend test → adjust → repeat
+Small steps > big changes.
 
 ---
 
