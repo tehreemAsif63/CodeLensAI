@@ -6,54 +6,21 @@
 
 ## 🚀 What this is
 
-CodeLens AI helps you understand code faster and more clearly.
+CodeLens AI helps you understand code faster.
 
-Paste any code.  
-Get explanations, concepts, structure, or quizzes instantly.
+Paste code → get explanations, concepts, structure, or quizzes.
 
-It turns complex or messy code into something readable and learnable.
+It turns complex code into something readable and learnable.
 
 ---
 
 ## ✨ Features
 
 - 📖 Explain code (simple → deep)
-- 🧠 Teach mode (concept breakdown)
-- 🧪 Quiz mode (test your understanding)
-- 🧩 Structure view (how parts connect)
-- ⚡ Adjustable explanation depth
-
----
-
-## 👤 Who this is for
-
-- Developers learning fullstack development
-- People reading unfamiliar or legacy code
-- Anyone who wants faster code understanding
-
----
-
-## 🎯 What it helps with
-
-- Understanding code quickly
-- Learning underlying concepts (React, async/await, Spring, etc.)
-- Adjusting explanation depth
-- Generating quizzes from code
-- Understanding system structure
-
----
-
-## 🚫 Non-goals
-
-This project intentionally avoids:
-
-- Authentication systems
-- CI/CD pipelines
-- Databases or complex persistence
-- Multi-page architecture
-- Advanced diagram rendering
-
-👉 Goal: **simple single-page + single API system**
+- 🧠 Teach concepts behind code
+- 🧪 Quiz mode
+- 🧩 Structure view
+- ⚡ Depth control
 
 ---
 
@@ -62,46 +29,20 @@ This project intentionally avoids:
 - React (Vite + TypeScript)
 - Spring Boot
 - REST API
-- Gemini API (AI engine)
-- Tailwind (optional)
+- Gemini API
 
 ---
 
 ## 🧭 How it works
 
-1. User pastes code
-2. User selects mode (Explain / Teach / Quiz / Structure)
-3. Backend builds a prompt based on mode + depth
-4. AI returns structured response
+1. Paste code
+2. Select mode
+3. Backend builds prompt
+4. AI responds
 5. UI displays result
 
 ---
 
-## 🔁 Build Flow (MVP-first approach)
+## ⚠️ Principle
 
-1. Backend: `/analyze` returns dummy response
-2. Frontend: UI sends request and displays response
-3. Backend: integrate AI (Gemini)
-4. Add modes (explain / teach / quiz / structure)
-5. Improve UI (optional polish)
-
-Rule: Always keep something working.
-
----
-
-## ⚠️ Core Principle
-
-Always keep a working version of the app.
-
-Small steps > big changes.
-
----
-
-## 🧠 Philosophy
-
-CodeLens AI exists for one reason:
-
-> Understanding code should be faster than writing it.
-
-It does not replace thinking.  
-It removes friction.
+Single page. Single API. Keep it simple.
