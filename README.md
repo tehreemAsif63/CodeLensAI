@@ -29,7 +29,7 @@ It turns complex code into something readable and learnable.
 - React (Vite + TypeScript)
 - Spring Boot
 - REST API
-- Gemini API
+- GitHub Models API (`gpt-4o-mini`)
 
 ---
 
@@ -48,6 +48,17 @@ It turns complex code into something readable and learnable.
 You need **two terminals**: backend first, then frontend.
 
 **Prerequisites:** JDK **19**, **Node.js** (with npm).
+
+### GitHub Models setup
+
+1. **Create a token**
+   - Go to GitHub **Settings** → **Developer settings** → **Personal access tokens**.
+   - Create a token that can access GitHub Models (per your org/account policy).
+2. **Put it in `.env`**
+   - Create `.env` in the project root:
+   - `GITHUB_TOKEN=your_token_here`
+3. **Load env before running backend**
+   - `export $(grep -v '^#' .env | xargs)`
 
 **1. Backend (Spring Boot, port 8080)**
 
