@@ -43,6 +43,31 @@ It turns complex code into something readable and learnable.
 
 ---
 
+## Run locally
+
+You need **two terminals**: backend first, then frontend.
+
+**Prerequisites:** JDK **19**, **Node.js** (with npm).
+
+**1. Backend (Spring Boot, port 8080)**
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+**2. Frontend (Vite, port 5173)**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173** in the browser. The UI calls the API at **http://localhost:8080**.
+
+---
+
 ## ⚠️ Principle
 
 Single page. Single API. Keep it simple.
