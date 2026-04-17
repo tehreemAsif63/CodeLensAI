@@ -37,6 +37,7 @@ button,
 input,
 select,
 textarea {
+
   font: inherit;
 }
 
@@ -495,10 +496,67 @@ select:focus {
   box-shadow: 0 10px 22px rgba(86, 112, 255, 0.18);
 }
 
+.secondary-button {
+  min-width: 128px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 14px;
+  background: rgba(10, 17, 32, 0.95);
+  color: #c6d4ef;
+  font-weight: 600;
+}
+
+.secondary-button:hover {
+  border-color: rgba(143, 179, 255, 0.45);
+  color: #e6eefc;
+}
+
 .primary-button:disabled {
   cursor: progress;
   opacity: 0.72;
 }
+
+.copy-button,
+.clear-button {
+  padding: 6px 12px;
+  border: 1px solid rgba(143, 179, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(143, 179, 255, 0.08);
+  color: #8fb3ff;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover,
+.clear-button:hover {
+  background: rgba(143, 179, 255, 0.15);
+  border-color: rgba(143, 179, 255, 0.5);
+}
+
+.copy-button:active,
+.clear-button:active {
+  transform: scale(0.98);
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.clear-button {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.char-count {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #7a8fa6;
+}
+
 
 .panel-header h2 {
   margin: 0 0 14px;
