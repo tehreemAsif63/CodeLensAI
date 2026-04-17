@@ -83,9 +83,11 @@ public class AiService {
     }
 
             private String teachConcepts(String code, String depth) {
-                String intro = "deep".equalsIgnoreCase(depth)
-                ? "I’ll explain the core concepts and why they matter before the code details."
-                : "I’ll keep the concept list short and practical.";
+                String intro = switch (normalize(depth)) {
+                    case "quick" -> "Memorize this: input -> validate -> process -> output. That's it.";
+                    case "deep" -> "I'll explain the core concepts, why they matter, and how they apply to different code patterns.";
+                    default -> "I'll keep the concept list short and practical.";
+                };
 
             return "Concepts you need:\n"
                 + "1. Separate responsibilities so each part has one job.\n"
@@ -96,9 +98,11 @@ public class AiService {
             }
 
             private String generateQuiz(String code, String depth) {
-            String questionStyle = "deep".equalsIgnoreCase(depth)
-                ? "These questions focus on understanding, not memorizing."
-                : "These are quick checks to confirm basic understanding.";
+            String questionStyle = switch (normalize(depth)) {
+                case "quick" -> "These are rapid-fire checks to confirm you can explain the code in one sentence.";
+                case "deep" -> "These questions focus on understanding edge cases, dependencies, and potential refactors.";
+                default -> "These are quick checks to confirm basic understanding.";
+            };
 
             return "Quiz mode:\n"
                 + "1. What is the main purpose of this code?\n"
@@ -108,9 +112,11 @@ public class AiService {
             }
 
             private String explainArchitectureFlow(String code, String depth) {
-            String detail = "deep".equalsIgnoreCase(depth)
-                ? "I’ll describe how data moves from the controller into the service and back to the user."
-                : "I’ll keep the flow simple and focused on the main layers.";
+            String detail = switch (normalize(depth)) {
+                case "quick" -> "Quick flow: request → handler → service → response. Done.";
+                case "deep" -> "I'll describe how data flows through each layer, including dependency injection, error handling, and state management.";
+                default -> "I'll keep the flow simple and focused on the main layers.";
+            };
 
             return "Architecture flow:\n"
                 + "1. The controller receives the request.\n"
@@ -125,9 +131,11 @@ public class AiService {
     }
 
     private String debuggingAdvice(String code, String depth) {
-        String focus = "deep".equalsIgnoreCase(depth)
-                ? "Start by tracing the error path, checking logs, and reproducing the issue with the smallest possible input."
-                : "Start with the most likely failure point and verify the input, logs, and recent code changes.";
+        String focus = switch (normalize(depth)) {
+            case "quick" -> "Quick fix: check logs, verify input, isolate the error. Done.";
+            case "deep" -> "Start by tracing the error path, checking logs, reproducing with the smallest possible input, and examining stack traces carefully.";
+            default -> "Start with the most likely failure point and verify the input, logs, and recent code changes.";
+        };
 
         return "Debugging steps:\n"
                 + "1. Reproduce the error consistently.\n"
@@ -139,9 +147,11 @@ public class AiService {
     }
 
     private String springBootTips(String depth) {
-        String detail = "deep".equalsIgnoreCase(depth)
-                ? "In Spring Boot, keep controllers thin, push logic into services, and let configuration stay in properties or environment variables."
-                : "Keep controllers thin and move business logic into services.";
+        String detail = switch (normalize(depth)) {
+            case "quick" -> "Three rules: controllers are thin, services hold logic, config stays external.";
+            case "deep" -> "In Spring Boot, understand dependency injection deeply, configure via profiles, test with TestContext, and leverage autoconfiguration wisely.";
+            default -> "Keep controllers thin and move business logic into services.";
+        };
 
         return "Spring Boot tips:\n"
                 + "1. Use `@RestController` for request handling and keep it light.\n"
@@ -152,9 +162,11 @@ public class AiService {
     }
 
     private String codingGuidance(String code, String depth) {
-        String detail = "deep".equalsIgnoreCase(depth)
-                ? "If you want, I can turn the snippet into a step-by-step walkthrough or suggest a cleaner refactor."
-                : "If you want, paste the snippet and I’ll explain the key moving parts.";
+        String detail = switch (normalize(depth)) {
+            case "quick" -> "Input, process, output. That's the pattern. Keep it simple.";
+            case "deep" -> "If you want, I can turn the snippet into a comprehensive refactor guide with testability improvements and potential architectural changes.";
+            default -> "If you want, paste the snippet and I'll explain the key moving parts.";
+        };
 
         return "Coding guidance:\n"
                 + "1. Identify the inputs and outputs first.\n"

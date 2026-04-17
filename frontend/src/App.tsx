@@ -5,6 +5,8 @@ const API_BASE = "http://localhost:8080";
 
 type Mode = "explain" | "teach" | "quiz" | "structure";
 
+type Depth = "quick" | "medium" | "deep";
+
 type BannerKind = "idle" | "loading" | "error" | "success";
 
 type QuizQuestion = {
@@ -257,6 +259,7 @@ function pickFallbackMessage(kind: BannerKind, mode: Mode | "idle") {
 export default function App() {
   const [code, setCode] = useState("");
   const [mode, setMode] = useState<Mode>("explain");
+  const [depth, setDepth] = useState<Depth>("medium");
   const [responseText, setResponseText] = useState("");
   const [errorText, setErrorText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -443,7 +446,7 @@ export default function App() {
       const res = await fetch(`${API_BASE}/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, mode, depth: "shallow" }),
+        body: JSON.stringify({ code, mode, depth }),
       });
 
       if (!res.ok) {
@@ -524,6 +527,42 @@ export default function App() {
                   <option value="structure">Explain architecture flow</option>
                 </select>
               </label>
+
+              <fieldset className="depth-field">
+                <legend className="field-label">Depth</legend>
+                <div className="depth-options">
+                  <label>
+                    <input
+                      type="radio"
+                      name="depth"
+                      value="quick"
+                      checked={depth === "quick"}
+                      onChange={(e) => setDepth(e.target.value as Depth)}
+                    />
+                    Quick
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="depth"
+                      value="medium"
+                      checked={depth === "medium"}
+                      onChange={(e) => setDepth(e.target.value as Depth)}
+                    />
+                    Medium
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="depth"
+                      value="deep"
+                      checked={depth === "deep"}
+                      onChange={(e) => setDepth(e.target.value as Depth)}
+                    />
+                    Deep
+                  </label>
+                </div>
+              </fieldset>
 
               <button
                 type="submit"

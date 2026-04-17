@@ -450,6 +450,39 @@ select:focus {
   flex: 1;
 }
 
+.depth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.depth-field .field-label {
+  margin-bottom: 2px;
+}
+
+.depth-options {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.depth-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #b9c5d8;
+  cursor: pointer;
+}
+
+.depth-options input[type="radio"] {
+  cursor: pointer;
+  accent-color: #7aa2ff;
+}
+
 .primary-button {
   min-width: 140px;
   height: 48px;
