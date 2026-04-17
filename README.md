@@ -29,7 +29,7 @@ It turns complex code into something readable and learnable.
 - React (Vite + TypeScript)
 - Spring Boot
 - REST API
-- GitHub Models API (`gpt-4o-mini`)
+- Hybrid AI fallback with optional future OpenAI support
 
 ---
 
@@ -49,16 +49,14 @@ You need **two terminals**: backend first, then frontend.
 
 **Prerequisites:** JDK **19**, **Node.js** (with npm).
 
-### GitHub Models setup
+### AI mode
 
-1. **Create a token**
-   - Go to GitHub **Settings** → **Developer settings** → **Personal access tokens**.
-   - Create a token that can access GitHub Models (per your org/account policy).
-2. **Put it in `.env`**
-   - Create `.env` in the project root:
-   - `GITHUB_TOKEN=your_token_here`
-3. **Load env before running backend**
-   - `export $(grep -v '^#' .env | xargs)`
+The backend checks `OPENAI_API_KEY`.
+
+- If the key is missing or empty, it uses a built-in local fake AI response system.
+- If the key is present, the code is already structured for a future OpenAI integration point.
+
+No API key is required to run the app today.
 
 **1. Backend (Spring Boot, port 8080)**
 

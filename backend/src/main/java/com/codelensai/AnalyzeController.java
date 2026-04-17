@@ -8,23 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class AnalyzeController {
-    private final GitHubModelsService gitHubModelsService;
+    private final AiService aiService;
 
-    public AnalyzeController(GitHubModelsService gitHubModelsService) {
-        this.gitHubModelsService = gitHubModelsService;
+    public AnalyzeController(AiService aiService) {
+        this.aiService = aiService;
     }
 
     @PostMapping("/analyze")
     public String analyze(@RequestBody AnalyzeRequest body) {
-        String mode = body.mode() != null ? body.mode() : "";
-        String depth = body.depth() != null ? body.depth() : "";
-        String code = body.code() != null ? body.code() : "";
-
-        String prompt = "Analyze the following code.\n\n"
-                + "Mode: " + mode + "\n"
-                + "Depth: " + depth + "\n\n"
-                + "Code:\n" + code;
-
-        return gitHubModelsService.analyze(prompt);
+        return aiService.analyze(body);
     }
 }
