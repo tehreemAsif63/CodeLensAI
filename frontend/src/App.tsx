@@ -339,7 +339,6 @@ export default function App() {
     }
   }
 
-  
   function copyToClipboard() {
     if (responseText) {
       navigator.clipboard.writeText(responseText);
@@ -352,7 +351,6 @@ export default function App() {
     setErrorText("");
     setQuizAnswers({});
   }
-
 
   return (
     <div className="app-shell">
@@ -391,7 +389,7 @@ export default function App() {
                 rows={14}
                 placeholder="Paste your code here..."
               />
-                <div className="char-count">{code.length} characters</div>
+              <div className="char-count">{code.length} characters</div>
             </label>
 
             <div className="field-row">

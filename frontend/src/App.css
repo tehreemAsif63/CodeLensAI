@@ -37,7 +37,6 @@ button,
 input,
 select,
 textarea {
-
   font: inherit;
 }
 
@@ -444,16 +443,20 @@ select:focus {
   margin-top: 16px;
   display: flex;
   align-items: end;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
 .mode-field {
   flex: 1;
+  min-width: 220px;
 }
 
 .depth-field {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 220px;
   gap: 8px;
   margin: 0;
   padding: 0;
@@ -485,9 +488,11 @@ select:focus {
 }
 
 .primary-button {
+  flex: 0 0 auto;
   min-width: 140px;
   height: 48px;
   padding: 0 18px;
+  white-space: nowrap;
   border: 0;
   border-radius: 14px;
   background: linear-gradient(135deg, #7aa2ff 0%, #4ed6c0 100%);
@@ -497,9 +502,11 @@ select:focus {
 }
 
 .secondary-button {
+  flex: 0 0 auto;
   min-width: 128px;
   height: 48px;
   padding: 0 14px;
+  white-space: nowrap;
   border: 1px solid rgba(148, 163, 184, 0.24);
   border-radius: 14px;
   background: rgba(10, 17, 32, 0.95);
@@ -556,7 +563,6 @@ select:focus {
   font-size: 0.8rem;
   color: #7a8fa6;
 }
-
 
 .panel-header h2 {
   margin: 0 0 14px;
@@ -619,7 +625,8 @@ select:focus {
     align-items: stretch;
   }
 
-  .primary-button {
+  .primary-button,
+  .secondary-button {
     width: 100%;
   }
 
