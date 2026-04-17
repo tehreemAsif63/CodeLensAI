@@ -10,16 +10,16 @@
   background:
     radial-gradient(
       circle at top left,
-      rgba(91, 126, 255, 0.22),
-      transparent 32%
+      rgba(91, 126, 255, 0.18),
+      transparent 30%
     ),
     radial-gradient(
       circle at top right,
-      rgba(24, 195, 164, 0.16),
-      transparent 28%
+      rgba(24, 195, 164, 0.1),
+      transparent 26%
     ),
-    linear-gradient(180deg, #0b1020 0%, #11182b 100%);
-  color: #eef2ff;
+    linear-gradient(180deg, #080d18 0%, #10192a 100%);
+  color: #e8edf7;
 }
 
 * {
@@ -57,12 +57,12 @@ button {
 
 .app-card {
   width: min(1120px, 100%);
-  padding: 28px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 24px;
-  background: rgba(8, 12, 24, 0.72);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  padding: 30px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 26px;
+  background: rgba(10, 16, 28, 0.88);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
 }
 
 .hero {
@@ -82,12 +82,13 @@ button {
   font-size: clamp(2rem, 4vw, 3.5rem);
   line-height: 1.05;
   max-width: 12ch;
+  color: #f4f7fc;
 }
 
 .hero-copy {
   margin: 12px 0 0;
   max-width: 62ch;
-  color: #c6d0ea;
+  color: #b9c5d8;
   line-height: 1.6;
 }
 
@@ -99,6 +100,39 @@ button {
   font-size: 0.95rem;
 }
 
+.fallback-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 20px 0 22px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(143, 179, 255, 0.16);
+  background: linear-gradient(
+    135deg,
+    rgba(17, 25, 42, 0.95),
+    rgba(13, 23, 39, 0.92)
+  );
+  color: #dfe8f7;
+}
+
+.fallback-banner p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.fallback-pill {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(143, 179, 255, 0.14);
+  color: #b7cbff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
@@ -107,8 +141,8 @@ button {
 
 .panel {
   border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  background: rgba(15, 20, 36, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(14, 20, 34, 0.9);
 }
 
 .editor-panel,
@@ -123,16 +157,16 @@ button {
 
 .field-label {
   font-size: 0.95rem;
-  color: #dce3f7;
+  color: #d8e2f2;
 }
 
 textarea,
 select {
   width: 100%;
-  border: 1px solid rgba(148, 163, 184, 0.22);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 14px;
-  background: rgba(6, 10, 20, 0.92);
-  color: #f8fafc;
+  background: #0a1120;
+  color: #eef2ff;
   outline: none;
   transition:
     border-color 0.2s ease,
@@ -178,6 +212,7 @@ select:focus {
   background: linear-gradient(135deg, #7aa2ff 0%, #4ed6c0 100%);
   color: #07111f;
   font-weight: 700;
+  box-shadow: 0 10px 22px rgba(86, 112, 255, 0.18);
 }
 
 .primary-button:disabled {
@@ -188,6 +223,7 @@ select:focus {
 .panel-header h2 {
   margin: 0 0 14px;
   font-size: 1.05rem;
+  color: #f4f7fc;
 }
 
 .response-text {
@@ -195,9 +231,9 @@ select:focus {
   min-height: 320px;
   padding: 16px;
   border-radius: 16px;
-  background: rgba(6, 10, 20, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  color: #e5edff;
+  background: #09111f;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  color: #e6eefc;
   white-space: pre-wrap;
   word-break: break-word;
   line-height: 1.7;
@@ -213,11 +249,11 @@ select:focus {
 }
 
 .status.loading {
-  color: #a8c3ff;
+  color: #8fb3ff;
 }
 
 .status.error {
-  color: #ffb4b4;
+  color: #ff9191;
 }
 
 @media (max-width: 900px) {
