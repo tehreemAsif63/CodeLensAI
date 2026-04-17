@@ -22,6 +22,8 @@ public class AnalyzeController {
     private static final String GEMINI_MODEL = "gemini-2.0-flash";
     private static final String GEMINI_URL_TEMPLATE =
             "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s";
+    private static final String OLLAMA_URL = "http://localhost:11434/api/generate";
+    private static final String OLLAMA_MODEL = "llama3.1";
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -31,16 +33,6 @@ public class AnalyzeController {
         Map<String, Object> response = new LinkedHashMap<>();
 
         String apiKey = System.getenv("GEMINI_API_KEY");
-        if (apiKey == null || apiKey.isBlank()) {
-            response.put("status", "error");
-            response.put("message", "GEMINI_API_KEY is not set.");
-            response.put("echo", Map.of(
-                    "mode", body.mode() != null ? body.mode() : "",
-                    "depth", body.depth() != null ? body.depth() : "",
-                    "codeLength", body.code() != null ? body.code().length() : 0));
-            return response;
-        }
-
         String mode = body.mode() != null ? body.mode() : "";
         String depth = body.depth() != null ? body.depth() : "";
         String code = body.code() != null ? body.code() : "";
@@ -50,6 +42,15 @@ public class AnalyzeController {
                 + "Code:\n" + code;
 
         try {
+            if (apiKey == null || apiKey.isBlank()) {
+                callOllamaFallback(response, prompt, "Gemini key missing");
+                response.put("echo", Map.of(
+                        "mode", mode,
+                        "depth", depth,
+                        "codeLength", code.length()));
+                return response;
+            }
+
             Map<String, Object> requestBody = Map.of(
                     "contents", List.of(Map.of(
                             "parts", List.of(Map.of("text", prompt)))));
@@ -111,7 +112,12 @@ public class AnalyzeController {
                 String blockReason = root.path("promptFeedback").path("blockReason").asText("");
                 String finishReason = root.path("candidates").path(0).path("finishReason").asText("");
 
-                if (!apiErrorMessage.isBlank()) {
+                if (!apiErrorMessage.isBlank()
+                        && (apiErrorMessage.toLowerCase().contains("quota")
+                        || apiErrorMessage.toLowerCase().contains("rate limit")
+                        || apiErrorMessage.toLowerCase().contains("exceeded"))) {
+                    callOllamaFallback(response, prompt, "Gemini quota exceeded");
+                } else if (!apiErrorMessage.isBlank()) {
                     response.put("message", "Gemini API error: " + apiErrorMessage);
                 } else if (!blockReason.isBlank()) {
                     response.put("message", "Gemini blocked the prompt: " + blockReason);
@@ -135,5 +141,36 @@ public class AnalyzeController {
                 "depth", depth,
                 "codeLength", code.length()));
         return response;
+    }
+
+    private void callOllamaFallback(Map<String, Object> response, String prompt, String reason) {
+        try {
+            Map<String, Object> ollamaBody = Map.of(
+                    "model", OLLAMA_MODEL,
+                    "prompt", prompt,
+                    "stream", false);
+            String jsonBody = objectMapper.writeValueAsString(ollamaBody);
+
+            HttpRequest ollamaRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(OLLAMA_URL))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> ollamaResponse = httpClient.send(ollamaRequest, HttpResponse.BodyHandlers.ofString());
+            JsonNode ollamaRoot = objectMapper.readTree(ollamaResponse.body());
+            String text = ollamaRoot.path("response").asText("");
+
+            if (ollamaResponse.statusCode() >= 200 && ollamaResponse.statusCode() < 300 && !text.isBlank()) {
+                response.put("status", "ok");
+                response.put("message", text);
+            } else {
+                response.put("status", "error");
+                response.put("message", reason + ". Ollama fallback failed.");
+            }
+        } catch (Exception ex) {
+            response.put("status", "error");
+            response.put("message", reason + ". Ollama fallback unavailable: " + ex.getMessage());
+        }
     }
 }
