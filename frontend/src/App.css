@@ -91,6 +91,14 @@ button {
   line-height: 1.6;
 }
 
+.fallback-note {
+  margin: 14px 0 0;
+  max-width: 62ch;
+  color: #9eb6ff;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);

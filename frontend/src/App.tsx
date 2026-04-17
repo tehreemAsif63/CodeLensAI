@@ -14,7 +14,9 @@ export default function App() {
 
   async function handleSubmit() {
     if (!code.trim()) {
-      setErrorText("Paste some code first so I can analyze it.");
+      setErrorText(
+        "Paste some code first so the fallback assistant has something useful to work with.",
+      );
       setResponseText("");
       return;
     }
@@ -33,7 +35,7 @@ export default function App() {
       if (!res.ok) {
         const message = await res.text();
         throw new Error(
-          message || "Something went wrong while analyzing the code.",
+          message || "The assistant hit a snag. Please try again in a moment.",
         );
       }
 
@@ -43,7 +45,7 @@ export default function App() {
       setErrorText(
         error instanceof Error
           ? error.message
-          : "Could not reach the backend. Please try again.",
+          : "Could not reach the backend. The fallback assistant is still here when it comes back.",
       );
     } finally {
       setLoading(false);
@@ -59,6 +61,10 @@ export default function App() {
           <p className="hero-copy">
             A simple workspace for code explanations, concept help, quick
             quizzes, and architecture flow.
+          </p>
+          <p className="fallback-note">
+            Local fallback mode is on: no real AI key required, just a helpful
+            best-effort assistant that keeps the work moving.
           </p>
         </section>
 
@@ -104,7 +110,10 @@ export default function App() {
             </div>
 
             {loading ? (
-              <p className="status loading">Working on it...</p>
+              <p className="status loading">
+                Working on it... the local assistant is putting together a
+                best-effort answer.
+              </p>
             ) : null}
             {errorText ? <p className="status error">{errorText}</p> : null}
           </form>
@@ -116,7 +125,8 @@ export default function App() {
             <pre
               className={responseText ? "response-text" : "response-text empty"}
             >
-              {responseText || "Your answer will appear here."}
+              {responseText ||
+                "Your answer will appear here. The fallback assistant is ready when you are."}
             </pre>
           </section>
         </div>
