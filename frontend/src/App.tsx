@@ -22,7 +22,7 @@ export default function App() {
       const data = await res.json();
       setResponseText(JSON.stringify(data, null, 2));
     } catch (e) {
-      setResponseText(String(e));
+      setResponseText(String(e));''
     } finally {
       setLoading(false);
     }
