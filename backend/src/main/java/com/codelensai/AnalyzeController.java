@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class AnalyzeController {
-    private static final String GEMINI_MODEL = "gemini-1.5-flash";
+    private static final String GEMINI_MODEL = "gemini-2.0-flash";
     private static final String GEMINI_URL_TEMPLATE =
             "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s";
 
@@ -60,7 +61,29 @@ public class AnalyzeController {
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
-            HttpResponse<String> geminiResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> geminiResponse = null;
+            IOException lastIoException = null;
+            for (int attempt = 1; attempt <= 2; attempt++) {
+                try {
+                    geminiResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                    break;
+                } catch (IOException ioEx) {
+                    lastIoException = ioEx;
+                    if (attempt == 2) {
+                        throw ioEx;
+                    }
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Interrupted while retrying Gemini request", interrupted);
+                    }
+                }
+            }
+
+            if (geminiResponse == null) {
+                throw new IOException("Gemini response was not received", lastIoException);
+            }
             JsonNode root = objectMapper.readTree(geminiResponse.body());
             JsonNode partsNode = root.path("candidates").path(0).path("content").path("parts");
 
