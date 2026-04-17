@@ -19,10 +19,22 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, mode, depth: "shallow" }),
       });
-      const data = await res.json();
-      setResponseText(JSON.stringify(data, null, 2));
+
+      const raw = await res.text();
+      const contentType = res.headers.get("content-type") ?? "";
+
+      if (contentType.includes("application/json")) {
+        try {
+          const data = JSON.parse(raw);
+          setResponseText(JSON.stringify(data, null, 2));
+        } catch {
+          setResponseText(raw);
+        }
+      } else {
+        setResponseText(raw);
+      }
     } catch (e) {
-      setResponseText(String(e));''
+      setResponseText(String(e));
     } finally {
       setLoading(false);
     }
