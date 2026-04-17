@@ -21,11 +21,13 @@ public class AiService {
         String code = normalize(request.code());
         String mode = normalize(request.mode());
         String depth = normalize(request.depth());
-        String combined = (mode + "\n" + depth + "\n" + code).toLowerCase(Locale.ROOT);
+        PromptMode promptMode = PromptMode.from(mode);
 
-        if (looksLikeCodeExplanationRequest(combined, mode)) {
-            return explainCode(code, depth);
+        if (promptMode != PromptMode.DEFAULT) {
+            return renderModeResponse(promptMode, code, depth);
         }
+
+        String combined = (mode + "\n" + depth + "\n" + code).toLowerCase(Locale.ROOT);
 
         if (containsAny(combined, "hello", "hi", "hey")) {
             return friendlyGreeting();
@@ -50,8 +52,14 @@ public class AiService {
         return fakeAIResponse(request);
     }
 
-    private boolean looksLikeCodeExplanationRequest(String combined, String mode) {
-        return "explain".equalsIgnoreCase(mode) || combined.contains("explain code") || combined.contains("explain");
+    private String renderModeResponse(PromptMode mode, String code, String depth) {
+        return switch (mode) {
+            case EXPLAIN -> explainCode(code, depth);
+            case TEACH -> teachConcepts(code, depth);
+            case QUIZ -> generateQuiz(code, depth);
+            case STRUCTURE -> explainArchitectureFlow(code, depth);
+            case DEFAULT -> defaultHelpfulResponse(code, mode.value, depth);
+        };
     }
 
     private String explainCode(String code, String depth) {
@@ -73,6 +81,44 @@ public class AiService {
                 + "Simple language:\n"
                 + detailLevel;
     }
+
+            private String teachConcepts(String code, String depth) {
+                String intro = "deep".equalsIgnoreCase(depth)
+                ? "I’ll explain the core concepts and why they matter before the code details."
+                : "I’ll keep the concept list short and practical.";
+
+            return "Concepts you need:\n"
+                + "1. Separate responsibilities so each part has one job.\n"
+                + "2. Follow input -> processing -> output.\n"
+                + "3. Keep state changes predictable.\n"
+                + "4. Use frameworks like Spring to organize code cleanly.\n\n"
+                + intro + (code.isBlank() ? "" : "\n\nThe provided code can be used as the example once you paste it in.");
+            }
+
+            private String generateQuiz(String code, String depth) {
+            String questionStyle = "deep".equalsIgnoreCase(depth)
+                ? "These questions focus on understanding, not memorizing."
+                : "These are quick checks to confirm basic understanding.";
+
+            return "Quiz mode:\n"
+                + "1. What is the main purpose of this code?\n"
+                + "2. Which part is responsible for the main logic flow?\n"
+                + "3. What would happen if the input were empty or invalid?\n\n"
+                + questionStyle + (code.isBlank() ? "" : "\n\nIf you share the code, I can tailor the 3 questions to it.");
+            }
+
+            private String explainArchitectureFlow(String code, String depth) {
+            String detail = "deep".equalsIgnoreCase(depth)
+                ? "I’ll describe how data moves from the controller into the service and back to the user."
+                : "I’ll keep the flow simple and focused on the main layers.";
+
+            return "Architecture flow:\n"
+                + "1. The controller receives the request.\n"
+                + "2. The service builds the response logic.\n"
+                + "3. The backend decides whether to use the local fallback or future AI path.\n"
+                + "4. The final text is returned to the UI.\n\n"
+                + detail + (code.isBlank() ? "" : "\n\nThe supplied code can be used to map the exact flow once it is included.");
+            }
 
     private String friendlyGreeting() {
         return "Hello. I’m ready to help you read code, debug issues, or explain Spring Boot patterns. If you paste a snippet, I’ll break it down clearly.";
@@ -168,5 +214,31 @@ public class AiService {
         }
 
         return false;
+    }
+
+    private enum PromptMode {
+        EXPLAIN("explain"),
+        TEACH("teach"),
+        QUIZ("quiz"),
+        STRUCTURE("structure"),
+        DEFAULT("");
+
+        private final String value;
+
+        PromptMode(String value) {
+            this.value = value;
+        }
+
+        private static PromptMode from(String mode) {
+            String normalizedMode = mode == null ? "" : mode.trim().toLowerCase(Locale.ROOT);
+
+            for (PromptMode promptMode : values()) {
+                if (promptMode.value.equals(normalizedMode)) {
+                    return promptMode;
+                }
+            }
+
+            return DEFAULT;
+        }
     }
 }
