@@ -27,7 +27,11 @@ body {
     radial-gradient(circle at 12% 14%, var(--aurora-blue), transparent 36%),
     radial-gradient(circle at 84% 10%, var(--aurora-cyan), transparent 32%),
     radial-gradient(circle at 52% 100%, var(--aurora-ice), transparent 42%),
-    linear-gradient(165deg, var(--aurora-bg-base) 0%, var(--aurora-bg-deep) 100%);
+    linear-gradient(
+      165deg,
+      var(--aurora-bg-base) 0%,
+      var(--aurora-bg-deep) 100%
+    );
   overflow-x: hidden;
 }
 
@@ -72,7 +76,11 @@ button {
   top: -12vh;
   left: -8vw;
   border-radius: 58% 42% 52% 48% / 42% 58% 44% 56%;
-  background: radial-gradient(circle at 30% 30%, rgba(120, 173, 255, 0.42), rgba(120, 173, 255, 0));
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(120, 173, 255, 0.42),
+    rgba(120, 173, 255, 0)
+  );
 }
 
 .app-shell::after {
@@ -83,7 +91,11 @@ button {
   right: -6vw;
   bottom: -10vh;
   border-radius: 45% 55% 39% 61% / 55% 44% 56% 45%;
-  background: radial-gradient(circle at 62% 38%, rgba(80, 227, 208, 0.36), rgba(80, 227, 208, 0));
+  background: radial-gradient(
+    circle at 62% 38%,
+    rgba(80, 227, 208, 0.36),
+    rgba(80, 227, 208, 0)
+  );
 }
 
 .app-card {
