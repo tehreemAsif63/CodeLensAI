@@ -629,6 +629,75 @@ select:focus {
   color: #f4f7fc;
 }
 
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.loading-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(143, 179, 255, 0.34);
+  background: rgba(16, 31, 56, 0.72);
+  color: #d9e6ff;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.loading-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(143, 179, 255, 0.3);
+  border-top-color: #8fb3ff;
+  animation: spin 0.8s linear infinite;
+}
+
+.response-loading {
+  min-height: 320px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(7, 15, 30, 0.74);
+  border: 1px solid rgba(173, 205, 255, 0.18);
+  color: #d8e2f2;
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.response-loading-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e9f0ff;
+}
+
+.response-loading p {
+  margin: 0;
+  color: #aebed9;
+}
+
+.loading-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(143, 179, 255, 0.14);
+  overflow: hidden;
+}
+
+.loading-bar span {
+  display: block;
+  width: 42%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7aa2ff, #4ed6c0);
+  animation: slide 1.3s ease-in-out infinite;
+}
+
 .response-text {
   margin: 0;
   min-height: 320px;
@@ -657,6 +726,21 @@ select:focus {
 
 .status.error {
   color: #ff9191;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
 }
 
 @media (max-width: 900px) {

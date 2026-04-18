@@ -165,6 +165,13 @@ export default function App() {
         ? "Fallback roadmap text"
         : "Response";
 
+  const loadingLabel =
+    mode === "quiz"
+      ? "Generating quiz response"
+      : mode === "structure"
+        ? "Generating architecture response"
+        : "Generating AI response";
+
   const responsePlaceholder =
     mode === "quiz"
       ? "Enable preview below to see the current hard-coded quiz experience."
@@ -474,6 +481,12 @@ export default function App() {
           <section className="panel response-panel" aria-live="polite">
             <div className="panel-header">
               <h2>{responseTitle}</h2>
+              {loading ? (
+                <div className="loading-chip" role="status" aria-live="polite">
+                  <span className="loading-spinner" aria-hidden="true" />
+                  <span>{loadingLabel}</span>
+                </div>
+              ) : null}
               {responseText && (
                 <button
                   type="button"
@@ -485,11 +498,30 @@ export default function App() {
                 </button>
               )}
             </div>
-            <pre
-              className={responseText ? "response-text" : "response-text empty"}
-            >
-              {responseText || responsePlaceholder}
-            </pre>
+            {loading ? (
+              <div
+                className="response-loading"
+                role="status"
+                aria-live="polite"
+              >
+                <div className="response-loading-title">
+                  <span className="loading-spinner" aria-hidden="true" />
+                  <strong>{loadingLabel}...</strong>
+                </div>
+                <p>Analyzing your code and preparing a helpful answer.</p>
+                <div className="loading-bar" aria-hidden="true">
+                  <span />
+                </div>
+              </div>
+            ) : (
+              <pre
+                className={
+                  responseText ? "response-text" : "response-text empty"
+                }
+              >
+                {responseText || responsePlaceholder}
+              </pre>
+            )}
           </section>
         </div>
 
