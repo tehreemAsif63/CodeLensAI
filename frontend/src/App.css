@@ -81,7 +81,11 @@ button {
   top: -12vh;
   left: -8vw;
   border-radius: 58% 42% 52% 48% / 42% 58% 44% 56%;
-  background: radial-gradient(circle at 30% 30%, rgba(75, 134, 180, 0.18), rgba(75, 134, 180, 0));
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(75, 134, 180, 0.18),
+    rgba(75, 134, 180, 0)
+  );
 }
 
 .app-shell::after {
@@ -92,7 +96,11 @@ button {
   right: -6vw;
   bottom: -10vh;
   border-radius: 45% 55% 39% 61% / 55% 44% 56% 45%;
-  background: radial-gradient(circle at 62% 38%, rgba(106, 163, 154, 0.08), rgba(106, 163, 154, 0));
+  background: radial-gradient(
+    circle at 62% 38%,
+    rgba(106, 163, 154, 0.08),
+    rgba(106, 163, 154, 0)
+  );
 }
 
 .app-card {
@@ -100,7 +108,11 @@ button {
   padding: 30px;
   border: 1px solid var(--border-soft);
   border-radius: 26px;
-  background: linear-gradient(135deg, rgba(247, 250, 255, 0.96), rgba(223, 234, 245, 0.94));
+  background: linear-gradient(
+    135deg,
+    rgba(247, 250, 255, 0.96),
+    rgba(223, 234, 245, 0.94)
+  );
   backdrop-filter: blur(20px) saturate(110%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.78),
@@ -136,7 +148,11 @@ button {
 .panel {
   border-radius: 20px;
   border: 1px solid var(--border-soft);
-  background: linear-gradient(155deg, rgba(247, 250, 255, 0.94), rgba(228, 238, 248, 0.88));
+  background: linear-gradient(
+    155deg,
+    rgba(247, 250, 255, 0.94),
+    rgba(228, 238, 248, 0.88)
+  );
   backdrop-filter: blur(16px) saturate(110%);
 }
 
@@ -150,7 +166,11 @@ button {
   position: sticky;
   top: 20px;
   align-self: start;
-  background: linear-gradient(155deg, rgba(247, 250, 255, 0.98), rgba(229, 239, 249, 0.94));
+  background: linear-gradient(
+    155deg,
+    rgba(247, 250, 255, 0.98),
+    rgba(229, 239, 249, 0.94)
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.84),
     0 20px 50px rgba(58, 70, 93, 0.12);
@@ -359,7 +379,11 @@ select:focus {
   min-height: 280px;
   padding: 18px 18px 16px;
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(247, 250, 255, 0.94), rgba(229, 239, 249, 0.88));
+  background: linear-gradient(
+    180deg,
+    rgba(247, 250, 255, 0.94),
+    rgba(229, 239, 249, 0.88)
+  );
   border: 1px solid rgba(120, 136, 160, 0.16);
   color: var(--text-normal);
   display: grid;
@@ -402,20 +426,123 @@ select:focus {
   min-height: 300px;
   max-height: calc(100vh - 190px);
   overflow: auto;
-  padding: 22px;
+  padding: 24px;
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(247, 250, 255, 0.95), rgba(229, 239, 249, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(247, 250, 255, 0.95),
+    rgba(229, 239, 249, 0.9)
+  );
   border: 1px solid rgba(120, 136, 160, 0.18);
   color: var(--text-strong);
-  white-space: pre-wrap;
   word-break: break-word;
-  line-height: 1.9;
-  font-size: 1.02rem;
+  line-height: 1.8;
+  font-size: 1rem;
   letter-spacing: 0.01em;
+}
+
+.response-text h1,
+.response-text h2,
+.response-text h3,
+.response-text h4,
+.response-text h5,
+.response-text h6 {
+  margin: 1.4em 0 0.6em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--accent);
+}
+
+.response-text h1 {
+  font-size: 1.8rem;
+}
+
+.response-text h2 {
+  font-size: 1.6rem;
+  border-bottom: 2px solid rgba(75, 134, 180, 0.2);
+  padding-bottom: 0.5em;
+}
+
+.response-text h3 {
+  font-size: 1.4rem;
+}
+
+.response-text p {
+  margin: 0.8em 0;
+  line-height: 1.8;
+}
+
+.response-text ul,
+.response-text ol {
+  margin: 0.8em 0;
+  padding-left: 2em;
+}
+
+.response-text li {
+  margin: 0.4em 0;
+  line-height: 1.7;
+}
+
+.response-text code {
+  background: rgba(75, 134, 180, 0.08);
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-family: "Monaco", "Courier New", monospace;
+  font-size: 0.95em;
+  color: #2f5b79;
+}
+
+.response-text pre {
+  background: rgba(30, 42, 55, 0.08);
+  border: 1px solid rgba(120, 136, 160, 0.16);
+  border-radius: 8px;
+  padding: 14px;
+  overflow-x: auto;
+  margin: 1em 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.response-text pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-strong);
+}
+
+.response-text blockquote {
+  margin: 0.8em 0;
+  padding-left: 1em;
+  border-left: 4px solid var(--accent);
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.response-text strong,
+.response-text b {
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.response-text em,
+.response-text i {
+  font-style: italic;
+}
+
+.response-text a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.response-text a:hover {
+  opacity: 0.8;
 }
 
 .response-text.empty {
   color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
 }
 
 .status {

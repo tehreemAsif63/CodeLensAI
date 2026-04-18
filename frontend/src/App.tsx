@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "./App.css";
 
 const API_BASE = "http://localhost:8080";
@@ -418,13 +419,17 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <pre
+              <div
                 className={
                   responseText ? "response-text" : "response-text empty"
                 }
               >
-                {responseText || "Your answer will appear here."}
-              </pre>
+                {responseText ? (
+                  <ReactMarkdown>{responseText}</ReactMarkdown>
+                ) : (
+                  "Your answer will appear here."
+                )}
+              </div>
             )}
           </section>
         </div>
