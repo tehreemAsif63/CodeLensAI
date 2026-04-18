@@ -14,6 +14,8 @@
   --accent: #4b86b4;
   --accent-2: #6aa39a;
   --accent-soft: rgba(75, 134, 180, 0.1);
+  --accent-dark: #2c5282;
+  --border-strong: rgba(44, 82, 130, 0.24);
   font-family:
     Inter,
     system-ui,
@@ -128,7 +130,7 @@ button {
   font-size: clamp(2.5rem, 6vw, 4.8rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--text-strong);
+  color: var(--accent-dark);
 }
 
 .hero-copy {
@@ -147,7 +149,7 @@ button {
 
 .panel {
   border-radius: 20px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--border-strong);
   background: linear-gradient(
     155deg,
     rgba(247, 250, 255, 0.94),
@@ -342,7 +344,8 @@ select:focus {
 .panel-header h2 {
   margin: 0 0 14px;
   font-size: 1.05rem;
-  color: var(--text-strong);
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .panel-header {
@@ -450,7 +453,7 @@ select:focus {
   margin: 1.4em 0 0.6em;
   font-weight: 700;
   line-height: 1.3;
-  color: var(--accent);
+  color: var(--accent-dark);
 }
 
 .response-text h1 {
@@ -459,7 +462,7 @@ select:focus {
 
 .response-text h2 {
   font-size: 1.6rem;
-  border-bottom: 2px solid rgba(75, 134, 180, 0.2);
+  border-bottom: 2px solid var(--accent-dark);
   padding-bottom: 0.5em;
 }
 
@@ -512,7 +515,7 @@ select:focus {
 .response-text blockquote {
   margin: 0.8em 0;
   padding-left: 1em;
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--accent-dark);
   font-style: italic;
   color: var(--text-muted);
 }
@@ -543,6 +546,40 @@ select:focus {
   align-items: center;
   justify-content: center;
   font-style: italic;
+}
+
+.response-text table {
+  margin: 1.2em 0;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid rgba(44, 82, 130, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.response-text thead {
+  background: rgba(44, 82, 130, 0.08);
+}
+
+.response-text th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-dark);
+  border-bottom: 2px solid rgba(44, 82, 130, 0.2);
+}
+
+.response-text td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(120, 136, 160, 0.12);
+}
+
+.response-text tr:last-child td {
+  border-bottom: none;
+}
+
+.response-text tbody tr:hover {
+  background: rgba(75, 134, 180, 0.05);
 }
 
 .status {
@@ -588,8 +625,8 @@ select:focus {
   min-width: 42px;
   padding: 8px 10px;
   border-radius: 12px;
-  background: rgba(75, 134, 180, 0.1);
-  color: #2f5b79;
+  background: var(--accent-dark);
+  color: #f7fbfe;
   font-weight: 700;
   text-align: center;
 }

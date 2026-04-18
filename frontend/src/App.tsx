@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./App.css";
 
 const API_BASE = "http://localhost:8080";
@@ -425,7 +426,9 @@ export default function App() {
                 }
               >
                 {responseText ? (
-                  <ReactMarkdown>{responseText}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {responseText}
+                  </ReactMarkdown>
                 ) : (
                   "Your answer will appear here."
                 )}
