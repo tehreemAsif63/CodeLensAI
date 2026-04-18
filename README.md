@@ -1,46 +1,58 @@
 # CodeLens AI
 
-CodeLens AI is a lightweight code-understanding app for demos and learning.
+A lightweight code-understanding app for demos and learning. Paste code, select mode (explain/teach/quiz/structure) and depth (quick/medium/deep), and get instant analysis.
 
-Paste code, choose a mode, choose depth, and get a response from a local backend fallback engine.
-
-## Current status (truthful)
-
-What works today:
-
-- Frontend + backend run locally without any API key.
-- Modes:
-  - `explain`
-  - `teach`
-  - `quiz`
-  - `structure`
-- Depth levels:
-  - `quick`
-  - `medium`
-  - `deep`
-- Quiz and structure have hard-coded preview experiences in the UI.
-- `Show preview` toggle is available for quiz/structure modes.
-- Response panel supports `Copy`.
-- Editor has `Clear` and character count.
-
-What is not live yet:
-
-- Real LLM generation is not integrated yet.
-- Even when `OPENAI_API_KEY` exists, backend currently still returns local fallback responses via placeholder routing.
+**Status**: Works locally without API keys. Uses local fallback engine. Real LLM integration coming soon.
 
 ## Tech stack
 
 - Frontend: React + TypeScript + Vite
 - Backend: Spring Boot (Java)
 - API: REST (`POST /analyze`)
+- CI/CD: GitHub Actions (tests + Pages deployment)
 
-## How it works right now
+## Architecture
 
-1. User pastes code in the frontend.
-2. User selects mode and depth.
-3. Frontend sends request to `POST /analyze`.
-4. Backend `AiService` uses local mode/depth-aware fallback logic.
-5. Response is rendered in the UI.
+```
+┌─────────────────────────────────────────────────────────┐
+│                     Frontend (React)                     │
+│              Port 5173 | http://localhost:5173           │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │  Editor + Mode/Depth Selectors + Response Panel    │  │
+│  └──────────────────────┬─────────────────────────────┘  │
+└─────────────────────────┼───────────────────────────────┘
+                          │ POST /analyze (JSON)
+                          ▼
+        ┌─────────────────────────────────────┐
+        │   Backend (Spring Boot)              │
+        │ Port 8080 | http://localhost:8080    │
+        │ ┌──────────────────────────────────┐ │
+        │ │ AnalyzeController                │ │
+        │ │ ├─ POST /analyze endpoint        │ │
+        │ └──────────────┬────────────────────┘ │
+        │                │                       │
+        │ ┌──────────────▼────────────────────┐ │
+        │ │ AiService                        │ │
+        │ │ ├─ Real LLM (future)             │ │
+        │ │ └─ Local Fallback (current)      │ │
+        │ └──────────────────────────────────┘ │
+        └─────────────────────────────────────┘
+                          │ Plain text response
+                          ▼
+        ┌─────────────────────────────────────┐
+        │     GitHub Actions (CI/CD)           │
+        │ ├─ Backend: Maven tests on push      │
+        │ └─ Frontend: Build & deploy to Pages │
+        └─────────────────────────────────────┘
+```
+
+## How it works
+
+1. User enters code in the frontend editor
+2. User selects mode and depth
+3. Frontend sends `POST /analyze` request to backend
+4. Backend `AiService` processes and returns plain text response
+5. Frontend receives response and displays it in the response panel
 
 ## Run locally
 
@@ -66,35 +78,15 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-## API contract
+## CI/CD Pipeline
 
-Endpoint:
+GitHub Actions automatically:
 
-- `POST /analyze`
+- **Backend**: Runs Maven tests on every push to `main` or `develop`
+- **Frontend**: Builds and deploys to GitHub Pages on `main`
 
-Request body:
+## Roadmap
 
-```json
-{
-  "code": "...",
-  "mode": "explain | teach | quiz | structure",
-  "depth": "quick | medium | deep"
-}
-```
-
-Response:
-
-- Plain text (`text/plain`)
-
-## Roadmap (planned)
-
-Planned next steps:
-
-1. Replace placeholder path with real OpenAI (or other provider) integration.
-2. Add provider abstraction to support multiple AI agents/providers.
-3. Keep local fallback as safe default when keys/providers are unavailable.
-4. Generate quiz/structure previews dynamically from model output.
-
-## Project principle
-
-Keep it simple, demoable, and honest about what is live versus planned.
+- Real LLM integration (OpenAI or other providers)
+- Provider abstraction to support multiple AI engines
+- Dynamic quiz/structure generation from model output
