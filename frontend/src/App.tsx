@@ -363,13 +363,10 @@ export default function App() {
     <div className="app-shell">
       <main className="app-card">
         <section className="hero">
-          <p className="eyebrow">CodeLens AI</p>
-          <h1>Paste code, pick a mode, and get a clearer answer.</h1>
+          <h1 className="app-title">CodeLens AI</h1>
           <p className="hero-copy">
-            A simple workspace for code explanations, concepts, quizzes, and
-            architecture breakdown.
+            Paste code, pick a mode, and get a clear answer.
           </p>
-          <p className="fallback-note">Local mode: no API key required.</p>
         </section>
 
         <div className="content-grid">
