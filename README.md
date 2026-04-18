@@ -1,76 +1,90 @@
 # CodeLens AI
 
-A lightweight code-understanding app for demos and learning. Paste code, select mode (explain/teach/quiz/structure) and depth (quick/medium/deep), and get instant analysis.
+CodeLens AI is a full-stack learning tool that helps users understand code faster.
 
-**Status**: Works locally without API keys. Uses local fallback engine. Real LLM integration coming soon.
+Users paste code, choose a mode and depth, and receive a clear AI-generated response.
 
-**New**: Mistral API integration enabled! Set `MISTRAL_API_KEY` env var to use Mistral AI. Falls back to local engine if key is missing.
+## Project Goal
 
-## Tech stack
+Make code understanding easier for students, beginners, and developers by turning raw snippets into readable explanations, guided teaching, and quiz-based learning.
 
-- Frontend: React + TypeScript + Vite
-- Backend: Spring Boot (Java)
-- API: REST (`POST /analyze`)
-- CI/CD: GitHub Actions (tests + Pages deployment)
+## What It Does
 
-## Architecture
+- 4 learning modes: `explain`, `teach`, `quiz`, `structure`
+- 3 depth levels: `quick`, `medium`, `deep`
+- Markdown rendering for clean, readable output
+- Quiz mode with scoring feedback
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                     Frontend (React)                     │
-│              Port 5173 | http://localhost:5173           │
-│  ┌────────────────────────────────────────────────────┐  │
-│  │  Editor + Mode/Depth Selectors + Response Panel    │  │
-│  └──────────────────────┬─────────────────────────────┘  │
-└─────────────────────────┼───────────────────────────────┘
-                          │ POST /analyze (JSON)
-                          ▼
-        ┌─────────────────────────────────────┐
-        │   Backend (Spring Boot)              │
-        │ Port 8080 | http://localhost:8080    │
-        │ ┌──────────────────────────────────┐ │
-        │ │ AnalyzeController                │ │
-        │ │ ├─ POST /analyze endpoint        │ │
-        │ └──────────────┬────────────────────┘ │
-        │                │                       │
-        │ ┌──────────────▼────────────────────┐ │
-        │ │ AiService                        │ │
-                │ │ ├─ Mistral API (if key set)      │ │
-                │ │ └─ Local Fallback (default)      │ │
-        │ └──────────────────────────────────┘ │
-        └─────────────────────────────────────┘
-                          │ Plain text response
-                          ▼
-        ┌─────────────────────────────────────┐
-        │     GitHub Actions (CI/CD)           │
-        │ ├─ Backend: Maven tests on push      │
-        │ └─ Frontend: Build & deploy to Pages │
-        └─────────────────────────────────────┘
+## Tech Stack
+
+- Frontend: React, TypeScript, Vite, Tailwind CSS
+- Backend: Spring Boot (Java 19)
+- AI Provider: Mistral Chat Completions API
+
+## High-Level Architecture
+
+```text
+User Browser (Frontend)
+	|
+	v
+React App (UI + input state)
+	|
+	v
+Spring Boot API (request validation + prompt building)
+	|
+	v
+Mistral API (AI response)
+	|
+	v
+Spring Boot API (returns plain text)
+	|
+	v
+React App (renders response/quiz)
 ```
 
-## How it works
+## User Journey
 
-1. User enters code in the frontend editor
-2. User selects mode and depth
-3. Frontend sends `POST /analyze` request to backend
-4. Backend `AiService` processes and returns plain text response
-5. Frontend receives response and displays it in the response panel
+```text
+Paste code -> Select mode/depth -> Click Analyze -> Review response
+						|
+						+-> If quiz mode: Answer -> Submit -> View score
+```
 
-## Run locally
+## Runtime Notes
+
+- Response type: plain text
+- Requires `MISTRAL_API_KEY`
+- Missing key returns `503 Service Unavailable`
+- Invalid request data returns `400`
+- Provider/network failures return `502`
+
+## Run Locally
 
 Prerequisites:
 
-- JDK 19
+- Java 19
 - Node.js + npm
 
-Start backend (port 8080):
+1. Create a local backend `.env` file:
 
 ```bash
 cd backend
+cat > .env <<EOF
+MISTRAL_API_KEY=your_key_here
+EOF
+```
+
+2. Load the `.env` values into your shell and start backend:
+
+```bash
+cd backend
+set -a
+source .env
+set +a
 mvn spring-boot:run
 ```
 
-Start frontend (port 5173):
+3. Start frontend:
 
 ```bash
 cd frontend
@@ -78,17 +92,14 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+4. Open the frontend URL shown by Vite.
 
-## CI/CD Pipeline
+## Environment Variable
 
-GitHub Actions automatically:
+The backend needs this variable:
 
-- **Backend**: Runs Maven tests on every push to `main` or `develop`
-- **Frontend**: Builds and deploys to GitHub Pages on `main`
+```bash
+MISTRAL_API_KEY=your_key_here
+```
 
-## Roadmap
-
-- Real LLM integration (OpenAI or other providers)
-- Provider abstraction to support multiple AI engines
-- Dynamic quiz/structure generation from model output
+If the key is missing, the backend returns `503 Service Unavailable`.
