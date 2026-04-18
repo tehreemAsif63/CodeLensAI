@@ -78,7 +78,7 @@ public class AiService {
         String modeInstruction = switch (mode) {
             case "explain" -> "Explain this code clearly in simple terms.";
             case "teach" -> "Teach me the key concepts in this code.";
-            case "quiz" -> "Generate 5 quiz questions about this code.";
+            case "quiz" -> "Generate exactly 5 multiple-choice quiz questions about this code and return ONLY valid JSON in this exact format: {\"questions\":[{\"question\":\"...\",\"options\":[\"...\",\"...\",\"...\",\"...\"],\"answerIndex\":0,\"explanation\":\"...\"}]}. answerIndex must be 0-based. Do not include markdown, code fences, or extra text.";
             case "structure" -> "Explain the architecture and flow of this code and ideally draw it to show how it connects.";
             default -> "Analyze this code.";
         };

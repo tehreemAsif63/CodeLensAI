@@ -314,6 +314,21 @@ button {
   color: #ffb4b4;
 }
 
+.quiz-actions {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.quiz-score {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(37, 211, 102, 0.14);
+  color: #9ff1bd;
+  font-weight: 700;
+}
+
 .architecture-example {
   margin-bottom: 16px;
 }
