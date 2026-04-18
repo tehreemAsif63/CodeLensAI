@@ -2,19 +2,94 @@ package com.codelensai;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AiService {
+    private final org.springframework.web.client.RestTemplate restTemplate;
+    private final String mistralApiKey;
+    private final String mistralApiUrl;
+    private final String mistralModel;
+
+    public AiService(
+            org.springframework.web.client.RestTemplate restTemplate,
+            @Value("${mistral.api.key:}") String mistralApiKey,
+            @Value("${mistral.api.url:https://api.mistral.ai/v1/chat/completions}") String mistralApiUrl,
+            @Value("${mistral.model:mistral-small-latest}") String mistralModel) {
+        this.restTemplate = restTemplate;
+        this.mistralApiKey = mistralApiKey;
+        this.mistralApiUrl = mistralApiUrl;
+        this.mistralModel = mistralModel;
+    }
+
     public String analyze(AnalyzeRequest request) {
         AnalyzeRequest safeRequest = request == null ? new AnalyzeRequest("", "", "") : request;
-        String apiKey = System.getenv("OPENAI_API_KEY");
+        String mistralKey = mistralApiKey == null ? "" : mistralApiKey.trim();
 
-        if (apiKey == null || apiKey.isBlank()) {
-            return fakeAIResponse(safeRequest);
+        if (mistralKey != null && !mistralKey.isBlank()) {
+            try {
+                return callMistralAPI(safeRequest, mistralKey);
+            } catch (Exception e) {
+                System.err.println("Mistral API error, falling back to local: " + e.getMessage());
+                return fakeAIResponse(safeRequest);
+            }
         }
 
-        return realAIPlaceholder(safeRequest);
+        return fakeAIResponse(safeRequest);
+    }
+
+    private String callMistralAPI(AnalyzeRequest request, String apiKey) {
+        
+        String prompt = buildPrompt(request);
+
+        var messages = java.util.List.of(
+            new MistralRequest.MistralMessage("user", prompt)
+        );
+        var mistralRequest = new MistralRequest(mistralModel, messages, 1000);
+        
+        var headers = new org.springframework.http.HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+        
+        var httpEntity = new org.springframework.http.HttpEntity<>(mistralRequest, headers);
+        
+        try {
+            var response = restTemplate.postForObject(
+                mistralApiUrl,
+                httpEntity,
+                MistralResponse.class
+            );
+            
+            if (response != null && response.choices().length > 0) {
+                return response.choices()[0].message().content();
+            }
+            return "No response from Mistral API.";
+        } catch (Exception e) {
+            throw new RuntimeException("Mistral API call failed: " + e.getMessage(), e);
+        }
+    }
+
+    private String buildPrompt(AnalyzeRequest request) {
+        String mode = normalize(request.mode());
+        String depth = normalize(request.depth());
+        String code = request.code() == null ? "" : request.code();
+
+        String modeInstruction = switch (mode) {
+            case "explain" -> "Explain this code clearly in simple terms.";
+            case "teach" -> "Teach me the key concepts in this code.";
+            case "quiz" -> "Generate 5 quiz questions about this code.";
+            case "structure" -> "Explain the architecture and flow of this code and ideally draw it to show how it connects.";
+            default -> "Analyze this code.";
+        };
+        
+        String depthInstruction = switch (depth) {
+            case "quick" -> " Keep it brief and to the point.";
+            case "deep" -> " Provide detailed, in-depth analysis.";
+            default -> " Provide a balanced explanation.";
+        };
+        
+        return modeInstruction + depthInstruction + "\n\nCode:\n" + code;
     }
 
     private String fakeAIResponse(AnalyzeRequest request) {
@@ -46,10 +121,6 @@ public class AiService {
         }
 
         return defaultHelpfulResponse(code, mode, depth);
-    }
-
-    private String realAIPlaceholder(AnalyzeRequest request) {
-        return fakeAIResponse(request);
     }
 
     private String renderModeResponse(PromptMode mode, String code, String depth) {

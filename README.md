@@ -4,6 +4,8 @@ A lightweight code-understanding app for demos and learning. Paste code, select 
 
 **Status**: Works locally without API keys. Uses local fallback engine. Real LLM integration coming soon.
 
+**New**: Mistral API integration enabled! Set `MISTRAL_API_KEY` env var to use Mistral AI. Falls back to local engine if key is missing.
+
 ## Tech stack
 
 - Frontend: React + TypeScript + Vite
@@ -33,8 +35,8 @@ A lightweight code-understanding app for demos and learning. Paste code, select 
         │                │                       │
         │ ┌──────────────▼────────────────────┐ │
         │ │ AiService                        │ │
-        │ │ ├─ Real LLM (future)             │ │
-        │ │ └─ Local Fallback (current)      │ │
+                │ │ ├─ Mistral API (if key set)      │ │
+                │ │ └─ Local Fallback (default)      │ │
         │ └──────────────────────────────────┘ │
         └─────────────────────────────────────┘
                           │ Plain text response

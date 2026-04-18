@@ -2,6 +2,8 @@ package com.codelensai;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.web.client.RestTemplate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AiServiceTest {
@@ -9,7 +11,11 @@ public class AiServiceTest {
 
     @BeforeEach
     void setUp() {
-        aiService = new AiService();
+        aiService = new AiService(
+                new RestTemplate(),
+                "",
+                "https://api.mistral.ai/v1/chat/completions",
+                "mistral-small-latest");
     }
 
     @Test
@@ -34,6 +40,6 @@ public class AiServiceTest {
         AnalyzeRequest request = new AnalyzeRequest("System.out.println()", "default", "detailed");
         String result = aiService.analyze(request);
         
-        assertIsInstance(result, String.class, "Result should be a String");
+        assertTrue(result instanceof String, "Result should be a String");
     }
 }
