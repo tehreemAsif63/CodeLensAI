@@ -32,7 +32,7 @@ public class AiService {
                 return callMistralAPI(safeRequest, mistralKey);
             } catch (Exception e) {
                 System.err.println("Mistral API error, falling back to local: " + e.getMessage());
-                return fakeAIResponse(safeRequest);
+                return "Sorry, no answer fetched from AI right now. Please try again.";
             }
         }
 
@@ -94,33 +94,11 @@ public class AiService {
 
     private String fakeAIResponse(AnalyzeRequest request) {
         String code = normalize(request.code());
-        String mode = normalize(request.mode());
-        String depth = normalize(request.depth());
-        PromptMode promptMode = PromptMode.from(mode);
-
-        if (promptMode != PromptMode.DEFAULT) {
-            return renderModeResponse(promptMode, code, depth);
+        if (code.isBlank()) {
+            return "Sorry, no answer fetched. Please paste code and try again.";
         }
 
-        String combined = (mode + "\n" + depth + "\n" + code).toLowerCase(Locale.ROOT);
-
-        if (containsAny(combined, "hello", "hi", "hey")) {
-            return friendlyGreeting();
-        }
-
-        if (containsAny(combined, "error", "exception", "bug", "fail")) {
-            return debuggingAdvice(code, depth);
-        }
-
-        if (combined.contains("spring")) {
-            return springBootTips(depth);
-        }
-
-        if (combined.contains("code")) {
-            return codingGuidance(code, depth);
-        }
-
-        return defaultHelpfulResponse(code, mode, depth);
+        return "Sorry, no live AI answer fetched. Check API key and try again.";
     }
 
     private String renderModeResponse(PromptMode mode, String code, String depth) {
